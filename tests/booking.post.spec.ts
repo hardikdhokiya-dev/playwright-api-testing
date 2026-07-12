@@ -60,4 +60,35 @@ test.describe ("Booking API - POST", () => {
                 .toBe(booking.bookingdates.checkout);
 
         });
-});
+
+
+
+    /**
+     * Test Case 2
+     * Verify override functionality
+     */
+    test(
+        "Should create a booking with customized request data",
+        { tag: ["@api", "@regression"] },
+        async () => {
+
+            const booking = BookingFactory.createBooking({
+                firstname: "John",
+                lastname: "Smith",
+                totalprice: 999
+            });
+
+            const response = await bookingClient.createBooking(booking);
+
+            expect(response.status()).toBe(200);
+
+            const body = await response.json();
+
+            expect(body.booking.firstname).toBe("John");
+            expect(body.booking.lastname).toBe("Smith");
+            expect(body.booking.totalprice).toBe(999);
+
+        });
+
+
+        });
