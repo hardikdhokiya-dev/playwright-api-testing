@@ -26,18 +26,7 @@ export class BookingFactory {
 		};
 
 
-
-
-
-
-
-
-
 	}
-
-
-
-
 
   
 }
