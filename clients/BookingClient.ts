@@ -5,7 +5,7 @@ import { BookingRequest } from "../interfaces/Booking";
 
 export class BookingClient {
 
-	constructor ( private readonly request : APIRequestContext) {
+	constructor (private readonly request : APIRequestContext) {
 
 	}
 
