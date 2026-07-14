@@ -1,6 +1,6 @@
 import { test , expect } from "@playwright/test";
 import { BookingClient } from "../clients/BookingClient";
-import { BookingFactory } from "../factories/BookingDataFactory";
+import { BookingDataFactory } from "../factories/BookingDataFactory";
 
 
 test.describe ("Booking API - POST", () => {
@@ -15,7 +15,7 @@ test.describe ("Booking API - POST", () => {
     // Test Case 1 - Happy Path 
     test("Should create a booking successfully with valid request data", { tag: ["@api", "@smoke", "@booking"] }, async () => {
 
-        const booking = BookingFactory.createBooking();
+        const booking = BookingDataFactory.create();
 
         const response = await bookingClient.createBooking(booking);
 
@@ -50,7 +50,7 @@ test.describe ("Booking API - POST", () => {
     //Test Case 2 - Verify override functionality
     test("Should create a booking with customized request data", { tag: ["@api", "@regression"] }, async () => {
 
-            const booking = BookingFactory.createBooking({
+            const booking = BookingDataFactory.create({
                 firstname: "John",
                 lastname: "Smith",
                 totalprice: 999
