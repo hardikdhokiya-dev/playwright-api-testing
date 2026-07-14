@@ -16,12 +16,3 @@ export interface BookingRequest {
 		additionalneeds?: string;
 
 }
-
-
-export interface BookingResponse {
-
-		bookingid : number;
-		booking : BookingRequest;
-
-
-}

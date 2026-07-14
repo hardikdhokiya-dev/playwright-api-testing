@@ -1,6 +1,6 @@
 import { BookingRequest } from "../interfaces/Booking";
 
-export class BookingFactory {
+export class BookingDataFactory {
 
 	static createBooking ( override ?: Partial<BookingRequest> ) : BookingRequest {
 

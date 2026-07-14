@@ -1,6 +1,6 @@
 import { test , expect } from "@playwright/test";
 import { BookingClient } from "../clients/BookingClient";
-import { BookingFactory } from "../factories/BookingFactory";
+import { BookingFactory } from "../factories/BookingDataFactory";
 
 
 test.describe ("Booking API - POST", () => {
@@ -29,26 +29,19 @@ test.describe ("Booking API - POST", () => {
 
 		expect(body.bookingid).toBeGreaterThan(0);
 
-		expect(body.booking.firstname)
-			.toBe(booking.firstname);
+		expect(body.booking.firstname).toBe(booking.firstname);
 
-		expect(body.booking.lastname)
-			.toBe(booking.lastname);
+		expect(body.booking.lastname).toBe(booking.lastname);
 
-		expect(body.booking.totalprice)
-			.toBe(booking.totalprice);
+		expect(body.booking.totalprice).toBe(booking.totalprice);
 
-		expect(body.booking.depositpaid)
-			.toBe(booking.depositpaid);
+		expect(body.booking.depositpaid).toBe(booking.depositpaid);
 
-		expect(body.booking.additionalneeds)
-			.toBe(booking.additionalneeds);
+		expect(body.booking.additionalneeds).toBe(booking.additionalneeds);
 
-		expect(body.booking.bookingdates.checkin)
-			.toBe(booking.bookingdates.checkin);
+		expect(body.booking.bookingdates.checkin).toBe(booking.bookingdates.checkin);
 
-		expect(body.booking.bookingdates.checkout)
-			.toBe(booking.bookingdates.checkout);
+		expect(body.booking.bookingdates.checkout).toBe(booking.bookingdates.checkout);
 
         });
 
