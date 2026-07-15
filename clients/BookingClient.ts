@@ -1,25 +1,27 @@
-import { APIRequestContext, APIResponse, expect } from "@playwright/test";
+import { APIRequestContext, APIResponse } from "@playwright/test";
 import { BookingRequest } from "../interfaces/Booking";
+import { BaseApiClient } from "./BaseApiClient";
 
 
 
-export class BookingClient {
+export class BookingClient extends BaseApiClient {
 
-	constructor (private readonly request : APIRequestContext) {
+	constructor (request : APIRequestContext) {
+
+		super(request);
 
 	}
 
 
 	/**
      * Creates a new booking.
-     *
-     * @param booking Booking request payload.
+     * POST /booking
      * @returns APIResponse
      */
 
 	async createBooking ( booking : BookingRequest ) : Promise <APIResponse> {
 
-		const response = await this.request.post("/booking", {data : booking});
+		const response = await this.post("/booking", booking );
 
 		return response;
 	}
