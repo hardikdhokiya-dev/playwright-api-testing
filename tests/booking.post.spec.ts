@@ -1,9 +1,11 @@
-import { test , expect } from "@playwright/test";
+import { test , expect, APIResponse } from "@playwright/test";
 import { BookingClient } from "../clients/BookingClient";
 import { BookingDataFactory } from "../factories/BookingDataFactory";
 import { BookingAssertions } from "../assertions/BookingAssertions";
 import { ResponseAssertions } from "../assertions/ResponseAssertions";
 import { BookingRequest } from "../interfaces/Booking";
+import { BookingResponse } from "../interfaces/BookingResponse";
+import { JsonReader } from "../utils/JsonReader";
 
 
 test.describe ("Booking API - POST", () => {
@@ -21,17 +23,24 @@ test.describe ("Booking API - POST", () => {
      */
     test("should create a booking successfully with valid request data", { tag: ["@api", "@smoke", "@booking"] }, async () => {
 
-        // Arrange
-        const booking = BookingDataFactory.createBooking ();
+        let booking: BookingRequest;
+        let response: APIResponse;
+
+        await test.step("Arrange test data", async () => {
+            booking = BookingDataFactory.createBooking ();
+        });
 
         // Act
         const startTime = Date.now();
 
-        const response = await bookingClient.createBooking(booking);
+        await test.step("Send POST /booking request", async () => {
+            response = await bookingClient.createBooking(booking);
+        });
 
-		// Assert
-		await BookingAssertions.expectBookingCreated(response , booking);
-        await ResponseAssertions.expectResponseTime(startTime, 2000)
+		await test.step("Validate booking creation", async () => {
+		    await BookingAssertions.expectBookingCreated(response , booking);
+            await ResponseAssertions.expectResponseTime(startTime, 2000)
+        });  
 
     });
 
@@ -104,9 +113,9 @@ test.describe ("Booking API - POST", () => {
 
     test ( "should reject an invalid booking request", {tag : ["@api", "@booking", "@regression"]}, async ({request}) => { 
 
-        const invalidBooking = { firstname : 123, lastname : true, totalprice : "invalid"};
+        const invalidData : Record <string , unknown>  = JsonReader.read<Record<string, unknown>>("testdata/booking/booking-negative.json");
 
-        const response = await request.post("/booking", { data : invalidBooking});
+        const response = await request.post("/booking", { data : invalidData});
 
         expect(response.ok()).toBeFalsy();
 

@@ -1,5 +1,5 @@
 {
-    "depositpaid": "invalid",
-    "totalprice": "abc",
-    "additionalneeds": 123
+    "firstname": 123,
+    "lastname": true,
+    "totalprice": "invalid"
 }
