@@ -10,7 +10,7 @@ export class DateUtils {
      */
 
 	static today () : string {
-        return DateTime.now().toFormat("yyyy-mm-dd");
+        return DateTime.now().toISODate();
 	}
 
 
@@ -18,7 +18,7 @@ export class DateUtils {
      * Returns a future date.
      */
     static afterDays (days : number) : string {
-        return DateTime.now().plus({days}).toFormat("yyyy-mm-dd");
+        return DateTime.now().plus({days}).toISODate();
     } 
 
 }

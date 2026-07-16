@@ -5,7 +5,7 @@ import { DateUtils } from "../utils/DateUtils";
 
 export class BookingDataFactory {
 
-	static create ( override ?: Partial<BookingRequest> ) : BookingRequest {
+	static createBooking ( override ?: Partial<BookingRequest> ) : BookingRequest {
 
 		return {
 
