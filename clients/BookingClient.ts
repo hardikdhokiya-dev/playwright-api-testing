@@ -27,5 +27,25 @@ export class BookingClient extends BaseApiClient {
 	}
 
 
+	/**
+     * GET /booking
+     * Returns all booking IDs.
+     */
+
+	async getBookingIds () : Promise <APIResponse> {
+
+		return await this.get("/booking");
+	}
+
+	/**
+     * GET /booking/{id}
+     */
+    async getBooking( bookingId: number): Promise<APIResponse> {
+
+        return await this.get(`/booking/${bookingId}`);
+
+    }
+
+
 
 }
