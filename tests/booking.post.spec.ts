@@ -1,6 +1,9 @@
 import { test , expect } from "@playwright/test";
 import { BookingClient } from "../clients/BookingClient";
 import { BookingDataFactory } from "../factories/BookingDataFactory";
+import { BookingAssertions } from "../assertions/BookingAssertions";
+import { ResponseAssertions } from "../assertions/ResponseAssertions";
+import { BookingRequest } from "../interfaces/Booking";
 
 
 test.describe ("Booking API - POST", () => {
@@ -12,61 +15,103 @@ test.describe ("Booking API - POST", () => {
         bookingClient = new BookingClient(request);
     });
 
-    // Test Case 1 - Happy Path 
-    test("Should create a booking successfully with valid request data", { tag: ["@api", "@smoke", "@booking"] }, async () => {
+    /**
+     * Test Case: TC_1
+     * Verify a booking can be created using valid data.
+     */
+    test("should create a booking successfully with valid request data", { tag: ["@api", "@smoke", "@booking"] }, async () => {
 
-        const booking = BookingDataFactory.create();
+        // Arrange
+        const booking = BookingDataFactory.createBooking ();
+
+        // Act
+        const startTime = Date.now();
 
         const response = await bookingClient.createBooking(booking);
 
 		// Assert
-		expect(response.status()).toBe(200);
-		expect(response.ok()).toBeTruthy();
+		await BookingAssertions.expectBookingCreated(response , booking);
+        await ResponseAssertions.expectResponseTime(startTime, 2000)
 
-		expect(response.headers()["content-type"]).toContain("application/json");
+    });
 
-		const body = await response.json();
+    /**
+     * Test Case: TC_2
+     * Verify overridden values are persisted.
+     */
+    test("should create a booking with overridden values", { tag: ["@api", "@booking", "@regression"] }, async () => {
 
-		expect(body.bookingid).toBeGreaterThan(0);
+         // Arrange
+        const booking = BookingDataFactory.createBooking({ firstname: "John", lastname: "Smith", totalprice: 999 });
 
-		expect(body.booking.firstname).toBe(booking.firstname);
+        // Act
+        const response = await bookingClient.createBooking(booking);
 
-		expect(body.booking.lastname).toBe(booking.lastname);
+        // Assert
+		await BookingAssertions.expectBookingCreated(response , booking);
 
-		expect(body.booking.totalprice).toBe(booking.totalprice);
-
-		expect(body.booking.depositpaid).toBe(booking.depositpaid);
-
-		expect(body.booking.additionalneeds).toBe(booking.additionalneeds);
-
-		expect(body.booking.bookingdates.checkin).toBe(booking.bookingdates.checkin);
-
-		expect(body.booking.bookingdates.checkout).toBe(booking.bookingdates.checkout);
-
-        });
+    });
 
 
+    /**
+     * Test Case: TC_3
+     * Verify booking creation when optional fields are omitted.
+     */
 
-    //Test Case 2 - Verify override functionality
-    test("Should create a booking with customized request data", { tag: ["@api", "@regression"] }, async () => {
+    test ( "should create a booking without additional needs" , {tag : ["@api", "@booking", "@regression"]}, async () => {
 
-            const booking = BookingDataFactory.create({
-                firstname: "John",
-                lastname: "Smith",
-                totalprice: 999
-            });
+        const booking = BookingDataFactory.createBooking();
+
+        delete booking.additionalneeds;
+
+        const response = await bookingClient.createBooking(booking);
+
+        await BookingAssertions.expectBookingCreated(response, booking);
+
+    });
+
+
+    /**
+     * Test Case: TC_4
+     * Verify multiple bookings can be created and and each booking receives a unique ID.
+     */
+    test ( "should create multiple unique bookings", {tag : ["@api", "@booking", "@regression"]}, async () => {
+
+        const bookingIds = new Set<number>();
+
+        for ( let i = 0; i < 5; i++){
+
+            const booking = BookingDataFactory.createBooking();
 
             const response = await bookingClient.createBooking(booking);
 
-            expect(response.status()).toBe(200);
+            const created = await BookingAssertions.expectBookingCreated(response, booking);
 
-            const body = await response.json();
+            expect(bookingIds.has(created.bookingid)).toBeFalsy(); //early exit from the loop if duplicate found
 
-            expect(body.booking.firstname).toBe("John");
-            expect(body.booking.lastname).toBe("Smith");
-            expect(body.booking.totalprice).toBe(999);
+            bookingIds.add(created.bookingid);
 
-        });
+        }
 
+        //expect(bookingIds.size).toBe(5); Immediately tells us that no duplicate ID was returned.
+    });
+
+
+    /**
+     * Test Case: TC_5
+     * Verify an invalid request is rejected.
+     */
+
+    test ( "should reject an invalid booking request", {tag : ["@api", "@booking", "@regression"]}, async ({request}) => { 
+
+        const invalidBooking = { firstname : 123, lastname : true, totalprice : "invalid"};
+
+        const response = await request.post("/booking", { data : invalidBooking});
+
+        expect(response.ok()).toBeFalsy();
+
+        expect(response.status()).toBeGreaterThanOrEqual(400);
+
+    });
 
 });
