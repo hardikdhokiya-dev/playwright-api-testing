@@ -1,7 +1,7 @@
 import { APIRequestContext, APIResponse } from "@playwright/test";
 import { BookingRequest } from "../interfaces/Booking";
 import { BaseApiClient } from "./BaseApiClient";
-
+import { BookingSearch } from "../interfaces/BookingSearch";
 
 
 export class BookingClient extends BaseApiClient {
@@ -49,42 +49,11 @@ export class BookingClient extends BaseApiClient {
 
 	/**
      * GET /booking
-	 * Search by firstname
+	 * Retrieves bookings using optional filters.
      */
-    async getBookingByFirstname(firstname: string): Promise<APIResponse> {
+    async searchBookings (filters : BookingSearch) : Promise<APIResponse> {
 
-        return await this.request.get("/booking", {params: {firstname}});
-
-	}
-
-	/**
-     * GET /booking
-	 * Search by lastname
-     */
-    async getBookingByLastname(lastname: string): Promise<APIResponse> {
-
-        return await this.request.get("/booking", {params: {lastname}});
-
-	}
-
-	/**
-     * GET /booking
-	 * Search by check-in date
-     */
-    async getBookingByCheckin(checkin: string): Promise<APIResponse> {
-
-        return await this.request.get("/booking", {params : {checkin} });
-
-	}
-
-
-	/**
-     * GET /booking
-	 * Search by checkout date
-     */
-    async getBookingByCheckout(checkout : string): Promise<APIResponse> {
-
-        return await this.request.get("/booking", {params: {checkout}});
+        return await this.request.get("/booking", { params : filters});
 
 	}
 
