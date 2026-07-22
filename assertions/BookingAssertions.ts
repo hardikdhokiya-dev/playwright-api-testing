@@ -37,4 +37,26 @@ export class BookingAssertions {
 
     }
 
+
+
+    static async expectBookingMatches( response: APIResponse, expected: BookingRequest): Promise<void> {
+
+    const body = await response.json() as BookingRequest;
+
+    expect(body.firstname).toBe(expected.firstname);
+
+    expect(body.lastname).toBe(expected.lastname);
+
+    expect(body.totalprice).toBe(expected.totalprice);
+
+    expect(body.depositpaid).toBe(expected.depositpaid);
+
+    expect(body.bookingdates.checkin).toBe(expected.bookingdates.checkin);
+
+    expect(body.bookingdates.checkout).toBe(expected.bookingdates.checkout);
+
+    expect(body.additionalneeds).toBe(expected.additionalneeds);
+
+}
+
 }

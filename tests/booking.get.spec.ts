@@ -37,7 +37,7 @@ test.describe("GET /booking", () => {
 
         await test.step("Validate booking", async () => {
 
-                BookingAssertions.expectBookingCreated(response, createdBooking.booking);
+                BookingAssertions.expectBookingMatches(response, createdBooking.booking)
 
                 ResponseAssertions.expectStatus(response, 200);
 
