@@ -15,8 +15,7 @@ import { BookingResponse } from "../interfaces/BookingResponse";
 export class BookingHelper {
 
     /**
-     * Creates a booking and returns
-     * both the booking id and request payload.
+     * Creates a booking and returns both the booking id and request payload.
      */
     static async createBooking(request: APIRequestContext, overrides?: Partial<BookingRequest>): Promise<CreateBooking> {
 
