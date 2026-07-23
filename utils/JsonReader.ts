@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-
 export class JsonReader {
 
 
@@ -15,7 +14,14 @@ export class JsonReader {
 
     static read <T> (filePath : string) {
 
+        if (!filePath) {
+            throw new Error("JSON file path is missing");
+        }
+
+
         const absolutePath = path.resolve(filePath);    //because different operating systems and CI runners resolve relative paths differently.
+
+
         const fileContent = fs.readFileSync(absolutePath, 'utf-8');
         return JSON.parse(fileContent) as T;
 
