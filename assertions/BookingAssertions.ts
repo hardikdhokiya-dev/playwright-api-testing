@@ -8,6 +8,7 @@ export class BookingAssertions {
 
     /**
      * Verifies a booking was successfully created.
+     * Used by: POST /booking
      */
     static async expectBookingCreated(response: APIResponse, request: BookingRequest): Promise<BookingResponse> {
 
@@ -38,25 +39,80 @@ export class BookingAssertions {
     }
 
 
+    /**
+     * Verifies booking details.
+     * Used by: GET /booking/{id}
+     */
 
     static async expectBookingMatches( response: APIResponse, expected: BookingRequest): Promise<void> {
 
-    const body = await response.json() as BookingRequest;
+        const body = await response.json() as BookingRequest;
 
-    expect(body.firstname).toBe(expected.firstname);
+        expect(body.firstname).toBe(expected.firstname);
 
-    expect(body.lastname).toBe(expected.lastname);
+        expect(body.lastname).toBe(expected.lastname);
 
-    expect(body.totalprice).toBe(expected.totalprice);
+        expect(body.totalprice).toBe(expected.totalprice);
 
-    expect(body.depositpaid).toBe(expected.depositpaid);
+        expect(body.depositpaid).toBe(expected.depositpaid);
 
-    expect(body.bookingdates.checkin).toBe(expected.bookingdates.checkin);
+        expect(body.bookingdates.checkin).toBe(expected.bookingdates.checkin);
 
-    expect(body.bookingdates.checkout).toBe(expected.bookingdates.checkout);
+        expect(body.bookingdates.checkout).toBe(expected.bookingdates.checkout);
 
-    expect(body.additionalneeds).toBe(expected.additionalneeds);
+        expect(body.additionalneeds).toBe(expected.additionalneeds);
 
-}
+    }
+
+
+    /**
+     * Verifies the booking id list.
+     * Used by: GET /booking
+     */
+
+    static async expectBookingIdList(response: APIResponse): Promise<void> {
+
+        const body = await response.json() as { bookingid: number }[];
+
+        expect(Array.isArray(body)).toBeTruthy();
+
+        expect(body.length).toBeGreaterThan(0);
+
+        body.forEach((booking) => {
+
+            expect(booking.bookingid).toBeGreaterThan(0);
+
+        });
+
+    }
+
+
+
+    /**
+     * Verifies a booking exists in search results.
+     * Used by: GET /booking?firstname=&lastname=
+    */
+    
+
+    static async expectBookingSearchResult( response: APIResponse, bookingId: number): Promise<void> {
+
+        const body = await response.json() as { bookingid: number }[];
+
+        expect(Array.isArray(body)).toBeTruthy();
+
+        expect(body.length).toBeGreaterThan(0);
+
+        const bookingExists = body.some(
+
+            booking => booking.bookingid === bookingId
+
+        );
+
+        expect(bookingExists).toBeTruthy();
+
+    }
+
+
+
 
 }

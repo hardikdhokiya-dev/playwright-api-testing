@@ -1,13 +1,13 @@
 export interface BookingSearch {
 
-    [key: string]: string | number | boolean ;
+    [key: string]: string | number | boolean | undefined;
 
-    firstname : string;
+    firstname ?: string;
 
-    lastname : string;
+    lastname ?: string;
 
-    checkin : string;
+    checkin ?: string;
 
-    checkout : string;
+    checkout ?: string;
 
 }
