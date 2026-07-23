@@ -51,7 +51,7 @@ export class BookingClient extends BaseApiClient {
      * GET /booking
 	 * Retrieves bookings using optional filters.
      */
-    async searchBookings (filters : BookingSearch) : Promise<APIResponse> {
+    async searchBookings (filters : any) : Promise<APIResponse> {
 
         return await this.request.get("/booking", { params : filters});
 
