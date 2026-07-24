@@ -113,6 +113,53 @@ export class BookingAssertions {
     }
 
 
+    /**
+     * Verifies patched booking fields match expected values.
+     * Used by: PATCH /booking/{id}
+     */
+
+    static async expectBookingPatched(response: APIResponse, expected: Partial<BookingRequest> ): Promise<void> {
+
+        const body = await response.json() as BookingRequest;
+
+        if (expected.firstname !== undefined){
+            expect(body.firstname).toBe(expected.firstname);
+        }
+
+        if (expected.lastname !== undefined){
+            expect(body.lastname).toBe(expected.lastname);
+        }
+
+        if (expected.totalprice !== undefined){
+            expect(body.totalprice).toBe(expected.totalprice);
+        }
+
+        if (expected.depositpaid !== undefined){
+            expect(body.depositpaid).toBe(expected.depositpaid);
+        }
+
+        if (expected.additionalneeds !== undefined){
+            expect(body.additionalneeds).toBe(expected.additionalneeds);
+        }
+
+
+        if (expected.bookingdates !== undefined){
+
+            if (expected.bookingdates.checkin !== undefined) {
+                expect(body.bookingdates.checkin).toBe(expected.bookingdates.checkin);
+            }
+
+            if (expected.bookingdates.checkout !== undefined) {
+                expect(body.bookingdates.checkout).toBe(expected.bookingdates.checkout);
+            }
+
+
+        }
+
+    }
+
+
+
 
 
 }
