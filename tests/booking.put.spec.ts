@@ -6,7 +6,6 @@ import { BookingAssertions } from "../assertions/BookingAssertions";
 import { ResponseAssertions } from "../assertions/ResponseAssertions";
 import { AuthHelper } from "../utils/AuthHelper";
 import { CreateBooking } from "../interfaces/CreateBooking";
-import { AuthRequest } from "../interfaces/AuthRequest";
 import { AuthTestData } from "../interfaces/AuthTestData";
 import { JsonReader } from "../utils/JsonReader";
 import { BookingHelper } from "../utils/BookingHelper";

@@ -79,7 +79,7 @@ export class BookingClient extends BaseApiClient {
 	 */
 	async patchBooking(bookingId: number, booking: Partial<BookingRequest>, token: string): Promise<APIResponse> {
 
-    return await this.request.put(`/booking/${bookingId}`,
+    return await this.request.patch(`/booking/${bookingId}`,
 		{
             headers: this.authHeaders(token),
             data: booking
