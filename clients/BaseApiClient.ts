@@ -34,6 +34,11 @@ export abstract class BaseApiClient {
     }
 
 
+    protected authHeaders(token: string): Record<string, string> {
+        return {
+            Cookie: `token=${token}`
+        };
+    }
 
 
 

@@ -27,7 +27,7 @@ test.describe ("Booking API - POST", () => {
         let response: APIResponse;
 
         await test.step("Arrange test data", async () => {
-            booking = BookingDataFactory.createBooking ();
+            booking = BookingDataFactory.createBookingData ();
         });
 
         // Act
@@ -51,7 +51,7 @@ test.describe ("Booking API - POST", () => {
     test("should create a booking with overridden values", { tag: ["@api", "@booking", "@regression"] }, async () => {
 
          // Arrange
-        const booking = BookingDataFactory.createBooking({ firstname: "John", lastname: "Smith", totalprice: 999 });
+        const booking = BookingDataFactory.createBookingData({ firstname: "John", lastname: "Smith", totalprice: 999 });
 
         // Act
         const response = await bookingClient.createBooking(booking);
@@ -69,7 +69,7 @@ test.describe ("Booking API - POST", () => {
 
     test ( "should create a booking without additional needs" , {tag : ["@api", "@booking", "@regression"]}, async () => {
 
-        const booking = BookingDataFactory.createBooking();
+        const booking = BookingDataFactory.createBookingData();
 
         delete booking.additionalneeds;
 
@@ -90,7 +90,7 @@ test.describe ("Booking API - POST", () => {
 
         for ( let i = 0; i < 5; i++){
 
-            const booking = BookingDataFactory.createBooking();
+            const booking = BookingDataFactory.createBookingData();
 
             const response = await bookingClient.createBooking(booking);
 

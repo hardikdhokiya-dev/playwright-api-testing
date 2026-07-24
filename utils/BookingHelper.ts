@@ -15,7 +15,7 @@ export class BookingHelper {
 
         const bookingClient = new BookingClient(request);
 
-        const booking = BookingDataFactory.createBooking(overrides);
+        const booking = BookingDataFactory.createBookingData(overrides);
 
         const response = await bookingClient.createBooking(booking);
 
