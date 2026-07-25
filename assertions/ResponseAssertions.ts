@@ -42,4 +42,55 @@ export class ResponseAssertions {
 
     }
 
+    /**
+     * Verifies response status is 201 Created.
+     */
+
+
+    static expectCreated(response: APIResponse): void {
+
+        expect(response.ok()).toBeTruthy();
+        expect(response.status()).toBe(201);
+        console.log("Body:", response.text());
+
+    }
+
+
+    /**
+     * Verifies response status is 403 Forbidden.
+     */
+    static expectForbidden(response: APIResponse): void {
+
+        expect(response.ok()).toBeFalsy();
+        expect(response.status()).toBe(403);
+
+    }
+
+    /**
+     * Verifies response status is 404 Not Found.
+     */
+    static expectNotFound(response: APIResponse): void {
+
+        expect(response.ok()).toBeFalsy();
+        expect(response.status()).toBe(404);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

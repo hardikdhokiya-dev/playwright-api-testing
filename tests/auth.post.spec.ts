@@ -17,6 +17,7 @@ const authData  = JsonReader.read <AuthTestData>("testdata/auth/auth.json");
 test.describe("POST /auth", () => {
 
     let authClient: AuthClient;
+    let response : APIResponse;
 
     test.beforeEach(async ({ request }) => {
 
@@ -32,7 +33,6 @@ test.describe("POST /auth", () => {
 
     test("should generate token with valid credentials", {tag: ["@api","@auth","@positive","@regression"]}, async () => {
 
-        let response : APIResponse;
 
         await test.step("Create authentication request", async () => {
 
@@ -63,7 +63,6 @@ test.describe("POST /auth", () => {
 
     test("should reject invalid username", {tag: ["@api","@auth","@negative"]}, async () => {
 
-        let response : APIResponse;
 
         await test.step("Create authentication request", async () => {
 
@@ -94,7 +93,6 @@ test.describe("POST /auth", () => {
 
     test("should reject invalid password", {tag: ["@api","@auth","@negative"]}, async () => {
 
-        let response : APIResponse;
 
         await test.step("Create authentication request", async () => {
 
