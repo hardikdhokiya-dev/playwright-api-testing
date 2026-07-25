@@ -16,7 +16,7 @@ import { BookingHelper } from "../utils/BookingHelper";
 const authData  = JsonReader.read <AuthTestData>("testdata/auth/auth.json");
 
 
-test.describe("PUT /booking/{id}", () => {
+test.describe("PATCH /booking/{id}", () => {
 
     let bookingClient: BookingClient;
     let createdBooking : CreateBooking;

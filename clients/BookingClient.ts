@@ -64,10 +64,10 @@ export class BookingClient extends BaseApiClient {
 	async updateBooking(bookingId: number, booking: BookingRequest, token: string): Promise<APIResponse> {
 
     return await this.request.put(`/booking/${bookingId}`,
-		{
-            headers: this.authHeaders(token),
-            data: booking
-        }
+			{
+				headers: this.authHeaders(token),
+				data: booking
+			}
     );
 
 	}
@@ -79,12 +79,12 @@ export class BookingClient extends BaseApiClient {
 	 */
 	async patchBooking(bookingId: number, booking: Partial<BookingRequest>, token: string): Promise<APIResponse> {
 
-    return await this.request.patch(`/booking/${bookingId}`,
-		{
-            headers: this.authHeaders(token),
-            data: booking
-        }
-    );
+		return await this.request.patch(`/booking/${bookingId}`,
+				{
+					headers: this.authHeaders(token),
+					data: booking
+				}
+		);
 
 	}
 
@@ -95,9 +95,9 @@ export class BookingClient extends BaseApiClient {
      * DELETE /booking/{id}
      */
 
-	async 	deleteBooking (bookingId : number, token : string) : Promise <APIResponse> {
+	async deleteBooking (bookingId : number, token : string) : Promise <APIResponse> {
 
-		return await this.delete(`/booking/${bookingId}`,{ headers : this.authHeaders(token),});
+		return await this.delete(`/booking/${bookingId}`,{ headers : this.authHeaders(token)});
 
 	}
 

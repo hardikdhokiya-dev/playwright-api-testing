@@ -10,6 +10,8 @@ import { BookingSearch } from "../interfaces/BookingSearch";
 test.describe("GET /booking", () => {
 
     let bookingClient: BookingClient;
+    let createdBooking: CreateBooking;
+    let response : APIResponse;
 
 	//beforeEach Hooks
     test.beforeEach(async ({ request }) => {
@@ -22,9 +24,6 @@ test.describe("GET /booking", () => {
      */
 
     test("should retrieve booking by valid booking id", { tag: ["@api", "@booking", "@get", "@regression"] }, async ({request}) => {
-
-        let createdBooking: CreateBooking;
-        let response : APIResponse;
 
         await test.step("Create a booking", async () => {
             createdBooking = await BookingHelper.createBooking(request);
@@ -55,8 +54,6 @@ test.describe("GET /booking", () => {
      */
     test( "should retrieve all booking ids", { tag: ["@api", "@booking", "@get", "@regression"] }, async () => {
 
-            let response: APIResponse;
-
             await test.step("Retrieve all booking ids", async () => {
 
                 response = await bookingClient.getBookingIds();
@@ -82,8 +79,6 @@ test.describe("GET /booking", () => {
 
     test( "should search booking using multiple filters", { tag: ["@api", "@booking", "@get", "@regression"] }, async ({ request }) => {
 
-        let createdBooking: CreateBooking;
-        let response: APIResponse;
 
         await test.step("Create booking", async () => {
 
@@ -117,8 +112,6 @@ test.describe("GET /booking", () => {
      * Verify retrieving a non-existing booking returns HTTP 404.
      */
     test("should return 404 for a non-existing booking", {tag: ["@api", "@booking", "@get", "@negative"]}, async () => {
-
-        let response: APIResponse;
 
         await test.step("Retrieve a non-existing booking", async () => {
 

@@ -20,6 +20,10 @@ const authData  = JsonReader.read <AuthTestData>("testdata/auth/auth.json");
 test.describe("PUT /booking/{id}", () => {
 
     let bookingClient: BookingClient;
+    let createdBooking : CreateBooking;
+    let updatedBookingPayload : BookingRequest;
+    let token : string;
+    let response : APIResponse;
 
     test.beforeEach(async ({ request }) => {
 
@@ -35,12 +39,6 @@ test.describe("PUT /booking/{id}", () => {
      */
 
     test("should update an existing booking", { tag: ["@api","@booking","@put","@regression"]}, async ({ request }) => {
-
-
-        let createdBooking : CreateBooking;
-        let updatedBookingPayload : BookingRequest;
-        let token : string;
-        let response : APIResponse;
 
         await test.step("Generate authentication token",async () => {
 
@@ -88,11 +86,6 @@ test.describe("PUT /booking/{id}", () => {
      */
 
     test("should persist updated booking", { tag: ["@api","@booking","@put","@regression"]}, async ({ request }) => {
-
-        let createdBooking : CreateBooking;
-        let updatedBookingPayload : BookingRequest;
-        let token : string;
-        let response : APIResponse;
 
         await test.step("Generate authentication token",async () => {
 
@@ -145,11 +138,6 @@ test.describe("PUT /booking/{id}", () => {
      */
 
     test("should not update a non-existing booking", { tag: ["@api","@booking","@put","@negative","@regression"]}, async ({ request }) => {
-
-        let createdBooking : CreateBooking;
-        let updatedBookingPayload : BookingRequest;
-        let token : string;
-        let response : APIResponse;
 
         await test.step("Generate authentication token",async () => {
 

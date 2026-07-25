@@ -29,8 +29,12 @@ export abstract class BaseApiClient {
     }
 
 
-    protected async delete (endpoint : string , body : unknown) : Promise<APIResponse> {
-        return await this.request.delete(endpoint, {data : body});
+    protected async delete (endpoint : string , options?: {
+                                                            data?: unknown; 
+                                                            headers?: Record<string, string>; 
+                                                            }) : Promise<APIResponse> {
+
+        return await this.request.delete(endpoint, options);
     }
 
 
