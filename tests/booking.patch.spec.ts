@@ -19,6 +19,9 @@ const authData  = JsonReader.read <AuthTestData>("testdata/auth/auth.json");
 test.describe("PUT /booking/{id}", () => {
 
     let bookingClient: BookingClient;
+    let createdBooking : CreateBooking;
+    let token : string;
+    let response : APIResponse;
 
     test.beforeEach(async ({ request }) => {
 
@@ -35,12 +38,7 @@ test.describe("PUT /booking/{id}", () => {
 
     test("should update booking firstname", { tag: ["@api","@booking","@patch","@regression"]}, async ({ request }) => {
 
-        let createdBooking : CreateBooking;
-        let token : string;
-        let response : APIResponse;
-
         const patchData : Partial<BookingRequest> = { firstname : "Joff"};
-
 
         await test.step("Generate authentication token",async () => {
 
@@ -48,21 +46,17 @@ test.describe("PUT /booking/{id}", () => {
 
         });
         
-        
         await test.step("Create booking",async () => {
         
             createdBooking = await BookingHelper.createBooking(request);
 
         });
 
-        
         await test.step("Patch booking", async () => {
 
             response = await bookingClient.patchBooking(createdBooking.bookingId, patchData, token);
 
         });
-
-
 
         await test.step("Validate PATCH response", async () => {
 
@@ -83,12 +77,13 @@ test.describe("PUT /booking/{id}", () => {
 
     test("should update multiple booking fields", { tag: ["@api","@booking","@patch","@regression"]}, async ({ request }) => {
 
-
-        let createdBooking : CreateBooking;
-        let token : string;
-        let response : APIResponse;
-
-        const patchData : Partial<BookingRequest> = { firstname : "Joff", lastname : "Bathel", totalprice : 9999};
+        const patchData : Partial<BookingRequest> = { 
+                                    
+            firstname : "Joff", 
+            lastname : "Bathel", 
+            totalprice : 9999
+        
+        };
 
         await test.step("Generate authentication token",async () => {
 
@@ -123,19 +118,32 @@ test.describe("PUT /booking/{id}", () => {
 
 
 
+    /**
+     * Test Case: TC_03
+     * Verify patched data is persisted.
+     */
+
+    test("should persist patched booking", { tag: ["@api","@booking","@patch","@regression"]}, async ({ request }) => {
+
+        const patchData : Partial<BookingRequest> = { 
+                                    
+            firstname : "Wood", 
+            additionalneeds : "Lunch"
+        
+        };
+
+        token = await AuthHelper.generateToken(request, authData.validCredentials);
+
+        createdBooking = await BookingHelper.createBooking(request);
+
+        response = await bookingClient.patchBooking(createdBooking.bookingId, patchData, token);
+
+        ResponseAssertions.expectSuccess(response);
+        ResponseAssertions.expectStatus(response, 200);
+        BookingAssertions.expectBookingPatched(response, patchData);
 
 
-
-
-
-
-
-
-
-
-
-
-
+    });
 
 
 });
