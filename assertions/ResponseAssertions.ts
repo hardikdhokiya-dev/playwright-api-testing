@@ -76,7 +76,15 @@ export class ResponseAssertions {
 
     }
 
+    /**
+     * Verifies response status is 405 Method Not Allowed .
+     */
+    static expectMethodNotAllowed(response: APIResponse): void {
 
+        expect(response.ok()).toBeFalsy();
+        expect([404, 405]).toContain(response.status());
+
+    }
 
 
 
