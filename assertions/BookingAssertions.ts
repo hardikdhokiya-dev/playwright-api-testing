@@ -1,7 +1,7 @@
 import { APIResponse, expect } from "@playwright/test";
 import { BookingRequest } from "../interfaces/Booking";
 import { BookingResponse } from "../interfaces/BookingResponse";
-
+import { SchemaValidator } from "../validators/SchemaValidator";
 import { ResponseAssertions } from "./ResponseAssertions";
 
 export class BookingAssertions {
@@ -16,7 +16,11 @@ export class BookingAssertions {
         await ResponseAssertions.expectStatus(response, 200);
         await ResponseAssertions.expectContentType(response);
 
-        const body = await response.json() as BookingResponse;
+        const bodyJson = await response.json();
+
+        //SchemaValidator.validate( "create-booking.schema.json", bodyJson);
+
+        const body = bodyJson  as BookingResponse;
 
         expect(body.bookingid).toBeGreaterThan(0);
 
@@ -46,21 +50,25 @@ export class BookingAssertions {
 
     static async expectBookingMatches( response: APIResponse, expected: BookingRequest): Promise<void> {
 
-        const body = await response.json() as BookingRequest;
+        const body = await response.json();
 
-        expect(body.firstname).toBe(expected.firstname);
+        SchemaValidator.validate( "booking.schema.json", body);
 
-        expect(body.lastname).toBe(expected.lastname);
+        const booking = body as BookingRequest;
 
-        expect(body.totalprice).toBe(expected.totalprice);
+        expect(booking.firstname).toBe(expected.firstname);
 
-        expect(body.depositpaid).toBe(expected.depositpaid);
+        expect(booking.lastname).toBe(expected.lastname);
 
-        expect(body.bookingdates.checkin).toBe(expected.bookingdates.checkin);
+        expect(booking.totalprice).toBe(expected.totalprice);
 
-        expect(body.bookingdates.checkout).toBe(expected.bookingdates.checkout);
+        expect(booking.depositpaid).toBe(expected.depositpaid);
 
-        expect(body.additionalneeds).toBe(expected.additionalneeds);
+        expect(booking.bookingdates.checkin).toBe(expected.bookingdates.checkin);
+
+        expect(booking.bookingdates.checkout).toBe(expected.bookingdates.checkout);
+
+        expect(booking.additionalneeds).toBe(expected.additionalneeds);
 
     }
 
