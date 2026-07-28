@@ -1,5 +1,6 @@
 import { APIResponse, expect } from "@playwright/test";
 import { AuthResponse } from "../interfaces/AuthResponse";
+import { SchemaValidator } from "../validators/SchemaValidator";
 
 
 export class AuthAssertions {
@@ -7,7 +8,11 @@ export class AuthAssertions {
 
     static async expectedTockenCreated ( response : APIResponse) : Promise <void> {
 
-        const body = await response.json() as AuthResponse;
+        const bodyJson = await response.json();
+
+        SchemaValidator.validate( "auth.schema.json", bodyJson);
+
+        const body = bodyJson as AuthResponse;
 
         expect(body.token).toBeTruthy();
 
